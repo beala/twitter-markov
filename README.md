@@ -6,7 +6,6 @@ Generate random text from a tweet archive.
 
 ``` sh
 cabal sandbox init
-cabal configure
-cabal install -j
+cabal install --only-dependencies
 cabal build
 ```
