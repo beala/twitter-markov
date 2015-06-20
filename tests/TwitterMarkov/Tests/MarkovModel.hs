@@ -1,5 +1,7 @@
---module TwitterMarkov.MarkovModel.Tests
---(main, tests) where
+{-# LANGUAGE ScopedTypeVariables #-}
+
+module TwitterMarkov.Tests.MarkovModel
+(tests) where
 
 import Test.Tasty
 import Test.Tasty.QuickCheck as QC
@@ -7,14 +9,15 @@ import TwitterMarkov.MarkovModel (MonoidalValueMap(..), emptyModel, MarkovModel)
 import qualified Data.Map as Map
 import Data.Monoid (Sum(..))
 
-main :: IO ()
-main = defaultMain tests
-
 tests = testGroup "MarkovModel" [markovProps]
 
-markovProps = testGroup "Markov Model Properties"
-  [ QC.testProperty "empty model is neutral" $
+markovProps = testGroup "Markov model forms a monoid"
+  [ QC.testProperty "empty model is neutral left" $
       \model -> (emptyModel :: MarkovModel String) `mappend` model == model
+  , QC.testProperty "empty model is neutral right" $
+      \model -> model `mappend` (emptyModel :: MarkovModel String) == model
+  , QC.testProperty "mappend is associative" $
+      \(model1 :: MarkovModel String) model2 model3 -> (model1 `mappend` model2) `mappend` model3 == model1 `mappend` (model2 `mappend` model3)
   ]
 
 instance (Ord k, Arbitrary k, Arbitrary v) => Arbitrary (MonoidalValueMap k v) where

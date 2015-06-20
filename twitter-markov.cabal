@@ -45,9 +45,40 @@ build-type:          Simple
 -- Constraint on the version of Cabal needed to build this package.
 cabal-version:       >=1.10
 
+library
+  GHC-Options:    -Wall -threaded
+
+  exposed-modules:
+      TwitterMarkov.IO
+    , TwitterMarkov.MarkovModel
+    , TwitterMarkov.TweetMarkov
+    , TwitterMarkov.Types
+
+  -- LANGUAGE extensions used by modules in this package.
+  other-extensions:    OverloadedStrings, FlexibleContexts, OverloadedLists, DeriveDataTypeable, DeriveGeneric
+
+  -- Other library packages from which modules are imported.
+  build-depends:
+      base >=4.8 && <4.9
+    , text >=1.2 && <1.3
+    , mtl >=2.2 && <2.3
+    , random >=1.1 && <1.2
+    , directory >=1.2 && <1.3
+    , transformers >=0.4 && <0.5
+    , aeson >=0.8 && <0.9
+    , bytestring >=0.10 && <0.11
+    , safe >=0.3 && <0.4
+    , containers >=0.5 && <0.6
+    , semigroups >=0.16 && <0.17
+  
+  -- Directories containing source files.
+  hs-source-dirs:      src/lib
+  
+  -- Base language which the package is written in.
+  default-language:    Haskell2010
 
 executable twitter-markov
-  GHC-Options:    -Wall
+  GHC-Options:    -Wall -threaded
 
   -- .hs or .lhs file containing the Main module.
   main-is:             Main.hs
@@ -55,29 +86,22 @@ executable twitter-markov
   -- Modules included in this executable, other than Main.
   -- other-modules:       
   
-  -- LANGUAGE extensions used by modules in this package.
-  other-extensions:    OverloadedStrings, FlexibleContexts, OverloadedLists, DeriveDataTypeable, DeriveGeneric
-  
   -- Other library packages from which modules are imported.
-  build-depends:  base >=4.8 && <4.9,
-                  text >=1.2 && <1.3,
-                  mtl >=2.2 && <2.3,
-                  random >=1.1 && <1.2,
-                  directory >=1.2 && <1.3,
-                  transformers >=0.4 && <0.5,
-                  aeson >=0.8 && <0.9,
-                  bytestring >=0.10 && <0.11,
-                  safe >=0.3 && <0.4,
-                  containers >=0.5 && <0.6,
-                  semigroups >=0.16 && <0.17
+  build-depends:
+      base >=4.8 && <4.9
+    , twitter-markov
+    , text >=1.2 && <1.3
+    , mtl >=2.2 && <2.3
+    , random >=1.1 && <1.2
   
   -- Directories containing source files.
-  hs-source-dirs:      src
+  hs-source-dirs:      src/main
   
   -- Base language which the package is written in.
   default-language:    Haskell2010
 
 test-suite test
+  GHC-Options:    -Wall -threaded
   default-language:
     Haskell2010
   type:
@@ -86,18 +110,10 @@ test-suite test
     tests
     src
   main-is:
-    TwitterMarkov/Tests/MarkovModel.hs
+    tests.hs
   build-depends:
-    base >= 4.8 && < 4.9,
-    tasty >= 0.10,
-    tasty-quickcheck >= 0.8 && < 0.9,
-    text >=1.2 && <1.3,
-    mtl >=2.2 && <2.3,
-    random >=1.1 && <1.2,
-    directory >=1.2 && <1.3,
-    transformers >=0.4 && <0.5,
-    aeson >=0.8 && <0.9,
-    bytestring >=0.10 && <0.11,
-    safe >=0.3 && <0.4,
-    containers >=0.5 && <0.6,
-    semigroups >=0.16 && <0.17
+      base >=4.8 && <4.9
+    , twitter-markov
+    , containers >=0.5 && <0.6
+    , tasty >= 0.10
+    , tasty-quickcheck >= 0.8 && < 0.9
