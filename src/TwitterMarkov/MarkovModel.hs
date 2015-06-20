@@ -3,6 +3,7 @@ module TwitterMarkov.MarkovModel
 , singletonModel
 , generate
 , MarkovModel
+, MonoidalValueMap(..)
 ) where
 
 import qualified Data.Map.Strict as Map
@@ -15,7 +16,7 @@ import           Control.Monad.State
 type MarkovModel a = MonoidalValueMap a (MonoidalValueMap a (Sum Int))
 
 -- Map whose value is also a monoid.
-newtype MonoidalValueMap k v = MonoidalValueMap (Map.Map k v) deriving (Show)
+newtype MonoidalValueMap k v = MonoidalValueMap (Map.Map k v) deriving (Show, Eq, Ord)
 
 instance (Monoid v, Ord k) => Monoid (MonoidalValueMap k v) where
   mempty = MonoidalValueMap Map.empty
@@ -38,19 +39,16 @@ generate m seed =
   case lookupTransitions seed m of
     [] -> return []
     edges -> do
-      word <- weightedRandom $ NE.fromList edges
-      words_ <- generate m word
-      return $ word : words_
-
-randomRange :: (Random a, RandomGen s, MonadState s m) => a -> a -> m a
-randomRange high low = state $ randomR (low, high)
+      x <- weightedRandom $ NE.fromList edges
+      xs <- generate m x
+      return $ x : xs
 
 weightedRandom :: (RandomGen s, MonadState s m) => NE.NonEmpty (Sum Int, b) -> m b
 weightedRandom weights = do
-  r <- randomRange 0 totalWeight
+  r <- state $ randomR (0, totalWeight)
   case weights of
-    ((_,b) :| []) -> return b
-    ((Sum w,b) :| ws) -> 
+    ((_, b) :| []) -> return b
+    ((Sum w, b) :| ws) -> 
       if r <= w then 
         return b 
       else 
