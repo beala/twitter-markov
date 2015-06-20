@@ -85,6 +85,9 @@ executable twitter-markov
   
   -- Modules included in this executable, other than Main.
   -- other-modules:       
+
+  -- LANGUAGE extensions used by modules in this package.
+  other-extensions:    OverloadedStrings, FlexibleContexts
   
   -- Other library packages from which modules are imported.
   build-depends:
