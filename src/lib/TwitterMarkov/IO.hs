@@ -1,4 +1,6 @@
-{-# LANGUAGE FlexibleContexts, OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings     #-}
 
 module TwitterMarkov.IO
 ( parseFile
@@ -6,22 +8,21 @@ module TwitterMarkov.IO
 , ParseError(..)
 ) where
 
-import System.Directory
+import           System.Directory
 
-import Control.Monad.IO.Class
-import Control.Monad.Except
-import Data.Aeson
-import Data.List (isSuffixOf)
+import           Control.Monad.Except
+import           Data.Aeson
+import           Data.List                  (isSuffixOf)
 
 import qualified Data.ByteString.Lazy.Char8 as C
 
-import qualified Data.Text.Lazy as T
-import qualified Data.Text.Lazy.Encoding as TE (encodeUtf8)
-import qualified Data.Text.Lazy.IO as TIO (readFile)
+import qualified Data.Text.Lazy             as T
+import qualified Data.Text.Lazy.Encoding    as TE (encodeUtf8)
+import qualified Data.Text.Lazy.IO          as TIO (readFile)
 
-import Safe
+import           Safe
 
-import TwitterMarkov.Types 
+import           TwitterMarkov.Types
 
 data ParseError = ParseError T.Text T.Text deriving (Show)
 
@@ -46,6 +47,6 @@ getDirectoryFiles p = do
   let absContents = makeAbsPath allContents
   files <- filterM doesFileExist absContents
   return $ filter (isSuffixOf ".js") files
-  
-  where 
+
+  where
     makeAbsPath paths = ((p ++ "/") ++) <$> paths

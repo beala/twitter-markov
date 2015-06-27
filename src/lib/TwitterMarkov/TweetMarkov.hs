@@ -1,12 +1,13 @@
-{-# LANGUAGE OverloadedStrings, OverloadedLists #-}
+{-# LANGUAGE OverloadedLists   #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module TwitterMarkov.TweetMarkov
 (tweetsModel) where
 
-import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy            as T
 
-import           TwitterMarkov.Types
 import           TwitterMarkov.MarkovModel
+import           TwitterMarkov.Types
 
 tweetsModel :: [Tweet] -> MarkovModel T.Text
 tweetsModel tweets = foldMap (uncurry singletonModel) (tweets >>= twoGram)

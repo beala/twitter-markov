@@ -116,7 +116,10 @@ test-suite test
     tests.hs
   build-depends:
       base >=4.8 && <4.9
-    , twitter-markov
-    , containers >=0.5 && <0.6
     , tasty >= 0.10
     , tasty-quickcheck >= 0.8 && < 0.9
+    , twitter-markov
+    , containers >=0.5 && <0.6
+    , semigroups >=0.16 && <0.17
+    , mtl >=2.2 && <2.3
+    , random >=1.1 && <1.2

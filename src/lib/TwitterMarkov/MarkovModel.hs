@@ -1,17 +1,20 @@
+{-# LANGUAGE MultiParamTypeClasses #-}
+
 module TwitterMarkov.MarkovModel
 ( emptyModel
 , singletonModel
 , generate
 , MarkovModel
 , MonoidalValueMap(..)
+, weightedRandom
 ) where
 
-import qualified Data.Map.Strict as Map
-import           Data.Monoid (Sum(..))
-import           System.Random
-import qualified Data.List.NonEmpty as NE
-import           Data.List.NonEmpty (NonEmpty(..))
 import           Control.Monad.State
+import           Data.List.NonEmpty  (NonEmpty (..))
+import qualified Data.List.NonEmpty  as NE
+import qualified Data.Map.Strict     as Map
+import           Data.Monoid         (Sum (..))
+import           System.Random
 
 type MarkovModel a = MonoidalValueMap a (MonoidalValueMap a (Sum Int))
 
@@ -48,10 +51,10 @@ weightedRandom weights = do
   r <- state $ randomR (0, totalWeight)
   case weights of
     ((_, b) :| []) -> return b
-    ((Sum w, b) :| ws) -> 
-      if r <= w then 
-        return b 
-      else 
+    ((Sum w, b) :| ws) ->
+      if r <= w then
+        return b
+      else
         weightedRandom (NE.fromList ws)
 
   where

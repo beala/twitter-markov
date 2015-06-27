@@ -4,3 +4,6 @@
 dist
 cabal.sandbox.config
 .DS_Store
+*#*
+TAGS
+.stack-work

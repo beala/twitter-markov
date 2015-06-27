@@ -1,14 +1,15 @@
-{-# LANGUAGE OverloadedStrings, FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts  #-}
+{-# LANGUAGE OverloadedStrings #-}
 
-import TwitterMarkov.IO
-import TwitterMarkov.TweetMarkov
-import TwitterMarkov.MarkovModel
-import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy            as T
+import           TwitterMarkov.IO
+import           TwitterMarkov.MarkovModel
+import           TwitterMarkov.TweetMarkov
 
-import Control.Monad.State
-import Control.Monad.Except
-import System.Random
-import System.Environment
+import           Control.Monad.Except
+import           Control.Monad.State
+import           System.Environment
+import           System.Random
 
 main :: IO ()
 main = do
