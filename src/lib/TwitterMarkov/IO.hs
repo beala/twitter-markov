@@ -7,24 +7,18 @@ module TwitterMarkov.IO
 , parseDir
 , ParseError(..)
 ) where
-import Control.Applicative
-import Data.Traversable
-import           System.Directory
+
 
 import           Control.Monad.Except
 import           Data.Aeson
-import           Data.List                  (isSuffixOf)
-
 import qualified Data.ByteString.Lazy.Char8 as C
-
+import           Data.List                  (isSuffixOf)
 import qualified Data.Text.Lazy             as T
 import qualified Data.Text.Lazy.Encoding    as TE (encodeUtf8)
 import qualified Data.Text.Lazy.IO          as TIO (readFile)
-
 import           Safe
-
+import           System.Directory
 import           TwitterMarkov.Types
-
 data ParseError = ParseError T.Text T.Text deriving (Show)
 
 parseFile :: (MonadIO m, MonadError ParseError m) => FilePath -> m [Tweet]

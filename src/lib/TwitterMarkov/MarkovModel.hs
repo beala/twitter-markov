@@ -11,10 +11,9 @@ import           Control.Monad.State
 import           Data.List.NonEmpty  (NonEmpty (..))
 import qualified Data.List.NonEmpty  as NE
 import qualified Data.Map.Strict     as Map
-
 import           Data.Monoid
 import           System.Random
-import           Data.Foldable
+
 
 type MarkovModel a = MonoidalValueMap a (MonoidalValueMap a (Sum Int))
 
