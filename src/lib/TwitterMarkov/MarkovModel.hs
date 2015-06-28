@@ -2,6 +2,7 @@ module TwitterMarkov.MarkovModel
 ( emptyModel
 , singletonModel
 , generate
+, generateRandom
 , MarkovModel
 , MonoidalValueMap(..)
 , weightedRandom
@@ -36,6 +37,12 @@ lookupTransitions :: (Ord a) => a -> MarkovModel a -> [(Sum Int, a)]
 lookupTransitions k (MonoidalValueMap m) = maybe [] mapToWeightEdgeTuples (Map.lookup k m)
   where mapToWeightEdgeTuples (MonoidalValueMap inner) = fmap (\(s, w) -> (w, s)) (Map.toList inner)
 
+generateRandom :: (Ord a, RandomGen s, MonadState s m) => MarkovModel a -> m [a]
+generateRandom m = do
+  seed <- randomStartState m
+  generated <- generate m seed
+  return $ seed : generated
+
 generate :: (Ord a, RandomGen s, MonadState s m) => MarkovModel a -> a -> m [a]
 generate m seed =
   case lookupTransitions seed m of
@@ -44,6 +51,12 @@ generate m seed =
       x <- weightedRandom $ NE.fromList edges
       xs <- generate m x
       return $ x : xs
+
+randomStartState :: (RandomGen s, MonadState s m) => MarkovModel a -> m a
+randomStartState (MonoidalValueMap modelMap) = do
+  let keys = Map.keys modelMap
+  r <- state $ randomR (0, length keys - 1)
+  return $ keys !! r
 
 weightedRandom :: (RandomGen s, MonadState s m) => NE.NonEmpty (Sum Int, b) -> m b
 weightedRandom weights = do

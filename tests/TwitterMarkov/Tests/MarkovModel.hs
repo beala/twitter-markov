@@ -1,4 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 
 module TwitterMarkov.Tests.MarkovModel
 (tests) where
@@ -27,7 +28,7 @@ randomProps = testGroup "Randomness properties"
   [ QC.testProperty "Weight zero is never chosen" $
     \(randomWeights :: NE.NonEmpty (Sum Int, String)) (seed :: Int) ->
      let weights = (Sum 0, "never chosen") NE.<| randomWeights
-          r = weightedRandom weights
+         r = weightedRandom weights
       in
         evalState r (mkStdGen seed) /= "never chosen"
   ]

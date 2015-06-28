@@ -15,10 +15,11 @@ import           System.Random
 main :: IO ()
 main = do
   args <- getArgs
-  t <- evalStateT (runExceptT (generateTweet (args !! 0) (T.pack (args !! 1)))) (mkStdGen 1)
-  print t
+  stdGen <- getStdGen
+  t <- evalStateT (runExceptT (generateTweet (args !! 0))) stdGen
+  print (T.unwords <$> t)
 
-generateTweet :: FilePath -> T.Text -> ExceptT ParseError (StateT StdGen IO) [T.Text]
-generateTweet fp seed = do
+generateTweet :: FilePath -> ExceptT ParseError (StateT StdGen IO) [T.Text]
+generateTweet fp = do
   tweets <- parseDir fp
-  generate (tweetsModel tweets) seed
+  generateRandom (tweetsModel tweets)
