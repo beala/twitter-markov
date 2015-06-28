@@ -7,7 +7,8 @@ module TwitterMarkov.IO
 , parseDir
 , ParseError(..)
 ) where
-
+import Control.Applicative
+import Data.Traversable
 import           System.Directory
 
 import           Control.Monad.Except
@@ -36,7 +37,7 @@ parseFile filePath = do
 preprocess :: T.Text -> C.ByteString
 preprocess = TE.encodeUtf8 . T.unlines . tailSafe . T.lines
 
-parseDir :: (MonadIO m, MonadError ParseError m) => FilePath -> m [Tweet]
+parseDir :: (Functor m, Applicative m, MonadIO m, MonadError ParseError m) => FilePath -> m [Tweet]
 parseDir dirPath = do
   files <- liftIO $ getDirectoryFiles dirPath
   join <$> traverse parseFile files

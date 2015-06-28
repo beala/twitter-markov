@@ -59,7 +59,7 @@ library
 
   -- Other library packages from which modules are imported.
   build-depends:
-      base >=4.8 && <4.9
+      base >=4.7 && <5
     , text >=1.2 && <1.3
     , mtl >=2.2 && <2.3
     , random >=1.1 && <1.2
@@ -91,7 +91,7 @@ executable twitter-markov
   
   -- Other library packages from which modules are imported.
   build-depends:
-      base >=4.8 && <4.9
+      base >=4.7 && <5
     , twitter-markov
     , text >=1.2 && <1.3
     , mtl >=2.2 && <2.3
@@ -115,7 +115,7 @@ test-suite test
   main-is:
     tests.hs
   build-depends:
-      base >=4.8 && <4.9
+      base >=4.7 && <5
     , tasty >= 0.10
     , tasty-quickcheck >= 0.8 && < 0.9
     , twitter-markov

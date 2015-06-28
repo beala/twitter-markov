@@ -4,8 +4,8 @@
 module TwitterMarkov.TweetMarkov
 (tweetsModel) where
 
+import           Data.Foldable
 import qualified Data.Text.Lazy            as T
-
 import           TwitterMarkov.MarkovModel
 import           TwitterMarkov.Types
 

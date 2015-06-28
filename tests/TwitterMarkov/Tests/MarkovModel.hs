@@ -12,7 +12,7 @@ import qualified Data.List.NonEmpty as NE
 import Control.Monad.State
 import System.Random
 
-tests = testGroup "MarkovModel" [markovProps]
+tests = testGroup "MarkovModel" [markovProps, randomProps]
 
 markovProps = testGroup "Markov model forms a monoid"
   [ QC.testProperty "empty model is neutral left" $
@@ -26,7 +26,7 @@ markovProps = testGroup "Markov model forms a monoid"
 randomProps = testGroup "Randomness properties"
   [ QC.testProperty "Weight zero is never chosen" $
     \(randomWeights :: NE.NonEmpty (Sum Int, String)) (seed :: Int) ->
-      let weights = (Sum 0, "never chosen") NE.<| randomWeights
+     let weights = (Sum 0, "never chosen") NE.<| randomWeights
           r = weightedRandom weights
       in
         evalState r (mkStdGen seed) /= "never chosen"

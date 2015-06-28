@@ -7,7 +7,8 @@ module TwitterMarkov.Types
   text
 ) where
 
-import           Control.Monad  (mzero)
+import           Control.Applicative
+import           Control.Monad       (mzero)
 import           Data.Aeson
 import           Data.Text.Lazy
 import           Data.Typeable
