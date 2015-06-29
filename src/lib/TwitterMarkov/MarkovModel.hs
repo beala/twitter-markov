@@ -6,6 +6,7 @@ module TwitterMarkov.MarkovModel
 , MarkovModel
 , MonoidalValueMap(..)
 , weightedRandom
+, lookupTransitions
 ) where
 
 import           Control.Monad.State
@@ -60,14 +61,13 @@ randomStartState (MonoidalValueMap modelMap) = do
 
 weightedRandom :: (RandomGen s, MonadState s m) => NE.NonEmpty (Sum Int, b) -> m b
 weightedRandom weights = do
-  r <- state $ randomR (0, totalWeight)
+  r <- state $ randomR (1, totalWeight)
   case weights of
     ((_, b) :| []) -> return b
     ((Sum w, b) :| ws) ->
-      if r < w then
+      if r <= w then
         return b
       else
         weightedRandom (NE.fromList ws)
-
   where
     totalWeight = getSum $ foldMap fst weights
